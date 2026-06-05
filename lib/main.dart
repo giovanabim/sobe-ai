@@ -35,6 +35,20 @@ class MainApp extends StatelessWidget {
       title: "Sobe Aí!",
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
+
+      theme: ThemeData(
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Colors.white,
+        primaryColor: const Color(0xFF569B5C),
+        fontFamily: "Lexend",
+
+        textTheme: const TextTheme( // TextThemes
+          headlineLarge: TextStyle(
+            fontSize: 48,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }

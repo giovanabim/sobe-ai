@@ -24,12 +24,15 @@ class _InicialScreenState extends State<InicialScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 40,
           children: [
-            SizedBox( // placeholder da logo do Sobe Aí!
+            SizedBox( // logo sobe aí!
               height: 260,
               width: 200,
-              child: Container(color: Colors.green,),
+              child: Image.asset("assets/imagens/sobe_ai_logo.png")
             ),
-            const Text("Sobe Aí!"), // título
+            Text(
+              "Sobe Aí!",
+              style: Theme.of(context).textTheme.headlineLarge,
+            ), // título
             // TODO: no futuro, ao invés de ser um simples input, colocar um menu de escolha com dropbox
             SizedBox( // input do Estado
               width: 250,
@@ -50,14 +53,16 @@ class _InicialScreenState extends State<InicialScreen> {
               ),
             ),
             if (_estadoUserCtrl.text.isNotEmpty && _cidadeUserCtrl.text.isNotEmpty) ...[
-              ElevatedButton(
+              IconButton( // logo sobe ai
+                icon: const Icon(Icons.arrow_forward),
+                iconSize: 50,
+                color: Colors.black,
                 onPressed: () {
                   userProvider.atualizarEstado(_estadoUserCtrl.text);
                   userProvider.atualizarCidade(_cidadeUserCtrl.text);
 
                   context.go('/');
                 },
-                child: const Text("Continuar"),
               ),
             ],
           ],
