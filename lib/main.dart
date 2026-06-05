@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart'; // importando pacote go_router para n
 
 import 'providers/user_provider.dart';
 import 'screens/inicial_screen.dart'; // tela inicial
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(
@@ -22,8 +23,11 @@ class MainApp extends StatelessWidget {
     routes: [
       GoRoute(
         path: '/',
-        name: 'inicial',
         builder: (context, state) => const InicialScreen(), // classe da página da rota
+      ),
+      GoRoute(
+        path: '/home',
+        builder: (context, state) => const HomeScreen(), // classe da página da rota
       ),
       // repetir a mesma estrutura para outras rotas
     ]
@@ -39,13 +43,21 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
-        primaryColor: const Color(0xFF569B5C),
+        primaryColor: const Color(0xFF86B499),
         fontFamily: "Lexend",
 
         textTheme: const TextTheme( // TextThemes
           headlineLarge: TextStyle(
             fontSize: 48,
             fontWeight: FontWeight.bold,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight(500),
+            color: Colors.white
+          ),
+          headlineSmall: TextStyle(
+            fontSize: 18,
           ),
         ),
       ),

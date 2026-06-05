@@ -55,13 +55,13 @@ class _InicialScreenState extends State<InicialScreen> {
             if (_estadoUserCtrl.text.isNotEmpty && _cidadeUserCtrl.text.isNotEmpty) ...[
               IconButton( // logo sobe ai
                 icon: const Icon(Icons.arrow_forward),
-                iconSize: 50,
+                iconSize: 60,
                 color: Colors.black,
                 onPressed: () {
-                  userProvider.atualizarEstado(_estadoUserCtrl.text);
-                  userProvider.atualizarCidade(_cidadeUserCtrl.text);
+                  userProvider.atualizarEstado(_estadoUserCtrl.text.trim());
+                  userProvider.atualizarCidade(_cidadeUserCtrl.text.trim());
 
-                  context.go('/');
+                  context.go('/home');
                 },
               ),
             ],
