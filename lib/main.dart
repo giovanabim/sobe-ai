@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // importando pacote provider para mander estado de variáveis
 import 'package:go_router/go_router.dart'; // importando pacote go_router para navegar em telas
+import 'package:sobe_ai/screens/procurar_viagens_screen.dart';
 
 import 'providers/user_provider.dart';
 import 'screens/inicial_screen.dart'; // tela inicial
@@ -27,7 +28,11 @@ class MainApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/home',
-        builder: (context, state) => const HomeScreen(), // classe da página da rota
+        builder: (context, state) => const HomeScreen(), 
+      ),
+      GoRoute(
+        path: '/procurar',
+        builder: (context, state) => const ProcurarViagensScreen(),
       ),
       // repetir a mesma estrutura para outras rotas
     ]
@@ -59,6 +64,14 @@ class MainApp extends StatelessWidget {
           headlineSmall: TextStyle(
             fontSize: 18,
           ),
+          titleMedium: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight(700)
+          ),
+          titleLarge: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight(300)
+          )
         ),
       ),
     );

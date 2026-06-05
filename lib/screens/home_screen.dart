@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/user_provider.dart';
@@ -12,7 +11,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context); // para a integração do google maps, posição do user
@@ -25,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: const Color(0xFF000000), // cor da sombra da appbar
         surfaceTintColor: Colors.transparent, // desativa o efeito de escurecer a cor de fundo
 
+        leadingWidth: 70,
         leading: IconButton( // icone antes do titulo
           icon: const Icon(Icons.menu_rounded),
           iconSize: 44,
@@ -82,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.white,
             size: 38,
           ),
-          onPressed: () {}, // * ir para página de busca
+          onPressed: () {context.go('/procurar');}, 
         ),
       ),
     );
