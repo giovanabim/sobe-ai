@@ -67,8 +67,8 @@ class ViagemProvider extends ChangeNotifier {
     ),
     Viagem( // Exemplo 3
       id: 3,
-      origem: "Petrolina",
-      destino: "Afrânio",
+      origem: "Juazeiro",
+      destino: "Curaçá",
       motorista: "Wagner Nunes",
       preco: 35.00,
       horaSaida: "16:30",
@@ -77,8 +77,8 @@ class ViagemProvider extends ChangeNotifier {
     ),
     Viagem( // Exemplo 4
       id: 4,
-      origem: "Petrolina",
-      destino: "Curaçá",
+      origem: "Uauá",
+      destino: "Petrolina",
       motorista: "Luís Alencar",
       preco: 30.00,
       horaSaida: "08:00",

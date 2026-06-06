@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../providers/viagem_provider.dart';
+import '../providers/user_provider.dart';
 
 class ProcurarViagensScreen extends StatefulWidget {
   const ProcurarViagensScreen({super.key});
@@ -17,10 +18,14 @@ class _ProcurarViagensScreenState extends State<ProcurarViagensScreen> {
   @override
   Widget build(BuildContext context) {
     final viagemProvider = Provider.of<ViagemProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
-    final viagensFiltradas = viagemProvider.viagens.where((viagem) { // mecanismo de filtragem, retorna uma lista de resultados
-      return viagem.destino.toLowerCase().contains(_pesquisa.text.trim().toLowerCase());
-    }).toList();
+    final viagensFiltradas = _pesquisa.text.isEmpty 
+    ? viagemProvider.viagens.where((viagem) => viagem.origem == userProvider.cidade).toList() 
+    : viagemProvider.viagens.where((viagem) => viagem.destino.toLowerCase().contains(_pesquisa.text.trim().toLowerCase())).toList();
+    // 1. verifica se a pesquisa está vazia
+    // 2. Se sim: define os resultados como todas as viagens cuja origem é a mesma que a cidade o usuário
+    // 3. Se não: define os resultados como todas as viagens cujo destino é o mesmo que o da pesquisa
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -69,8 +74,19 @@ class _ProcurarViagensScreenState extends State<ProcurarViagensScreen> {
       ),
       body: Padding( // * Body -> [Center(Padding(Column(Container(Conteúdos da viagem))))]
         padding: EdgeInsets.only(top: 20, bottom: 5),
-        child: ListView.builder( // onde 
-          itemCount: viagensFiltradas.length, // TODO: se não tiver resultados, imprimir um texto
+        child: viagensFiltradas.isEmpty
+          ? SizedBox(
+            height: 50,
+            width: double.infinity,
+            child: Center(
+              child: Text(
+                "Sem resultados...",
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
+              ),
+            ),
+          )
+          : ListView.builder( // onde 
+          itemCount: viagensFiltradas.length,
           itemBuilder: (BuildContext context, int index) {
             final viagem = viagensFiltradas[index];
             return Container( // * Template para viagens
