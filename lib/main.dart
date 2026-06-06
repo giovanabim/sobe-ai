@@ -4,13 +4,17 @@ import 'package:go_router/go_router.dart'; // importando pacote go_router para n
 import 'package:sobe_ai/screens/procurar_viagens_screen.dart';
 
 import 'providers/user_provider.dart';
+import 'providers/viagem_provider.dart';
 import 'screens/inicial_screen.dart'; // tela inicial
 import 'screens/home_screen.dart';
 
 void main() {
   runApp(
     MultiProvider( // configuração do provider
-      providers: [ChangeNotifierProvider(create: (_) => UserProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => ViagemProvider()),  
+      ],
       child: MainApp(),
     ),
   );
@@ -44,6 +48,8 @@ class MainApp extends StatelessWidget {
       title: "Sobe Aí!",
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
+
+      scrollBehavior: const MaterialScrollBehavior().copyWith(scrollbars: false),
 
       theme: ThemeData(
         brightness: Brightness.light,
