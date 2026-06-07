@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // importando pacote provider para mander estado de variáveis
 import 'package:go_router/go_router.dart'; // importando pacote go_router para navegar em telas
-import 'package:sobe_ai/screens/procurar_viagens_screen.dart';
 
-import 'providers/user_provider.dart';
-import 'providers/viagem_provider.dart';
+import 'providers/user_provider.dart'; // provider dos usuários
+import 'providers/viagem_provider.dart'; // provider das viagens
 import 'screens/inicial_screen.dart'; // tela inicial
-import 'screens/home_screen.dart';
+import 'screens/home_screen.dart'; // tela principal
+import 'screens/procurar_viagens_screen.dart'; // tela de busca
+import 'screens/detalhes_viagem_screen.dart'; // tela de detalhes da viagem
 
 void main() {
   runApp(
@@ -37,6 +38,13 @@ class MainApp extends StatelessWidget {
       GoRoute(
         path: '/procurar',
         builder: (context, state) => const ProcurarViagensScreen(),
+      ),
+      GoRoute(
+        path: '/detalhes/:id', // passa o id da viagem do card que foi clicado, para ser acessado na página de detalhes
+        builder: (context, state) {
+          final viagemId = state.pathParameters['id']; 
+          return DetalhesViagemScreen(id: viagemId);
+        },
       ),
       // repetir a mesma estrutura para outras rotas
     ]

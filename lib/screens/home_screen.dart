@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container( // placeholder para o mapa
         height: double.infinity,
         width: double.infinity,
-        color: Colors.white,
+        color: Colors.amber.shade100,
         child: Center(child: Text("MAPA")),
       ),
       floatingActionButton: SizedBox(

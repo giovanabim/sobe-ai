@@ -17,10 +17,10 @@ class _ProcurarViagensScreenState extends State<ProcurarViagensScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final viagemProvider = Provider.of<ViagemProvider>(context);
-    final userProvider = Provider.of<UserProvider>(context);
+    final viagemProvider = Provider.of<ViagemProvider>(context); // para exibir as viagens disponíveis
+    final userProvider = Provider.of<UserProvider>(context); // para saber a cidade do usuário
 
-    final viagensFiltradas = _pesquisa.text.isEmpty 
+    final viagensFiltradas = _pesquisa.text.isEmpty // resultados do mecanismo de filtragem
     ? viagemProvider.viagens.where((viagem) => viagem.origem == userProvider.cidade).toList() 
     : viagemProvider.viagens.where((viagem) => viagem.destino.toLowerCase().contains(_pesquisa.text.trim().toLowerCase())).toList();
     // 1. verifica se a pesquisa está vazia
@@ -72,10 +72,10 @@ class _ProcurarViagensScreenState extends State<ProcurarViagensScreen> {
           ),
         ),
       ),
-      body: Padding( // * Body -> [Center(Padding(Column(Container(Conteúdos da viagem))))]
+      body: Padding( // * Body -> Padding(ListView.builder(InkWell(Container(Padding(Column(Conteúdo))))))
         padding: EdgeInsets.only(top: 20, bottom: 5),
-        child: viagensFiltradas.isEmpty
-          ? SizedBox(
+        child: viagensFiltradas.isEmpty // se não houver resultados
+          ? SizedBox( // texto de falta de resultados
             height: 50,
             width: double.infinity,
             child: Center(
@@ -85,66 +85,69 @@ class _ProcurarViagensScreenState extends State<ProcurarViagensScreen> {
               ),
             ),
           )
-          : ListView.builder( // onde 
+          : ListView.builder( // Cria os cards correspondentes dos resultados 
           itemCount: viagensFiltradas.length,
           itemBuilder: (BuildContext context, int index) {
             final viagem = viagensFiltradas[index];
-            return Container( // * Template para viagens
-              constraints: const BoxConstraints( // Tamanho
-                minHeight: 200,
-              ),
-              width: double.infinity,
-              margin: EdgeInsets.only(left: 15, right: 15, bottom: 20),
-
-              decoration: BoxDecoration( // Estilo
-                borderRadius: BorderRadius.circular(15.0),
-                color: Colors.white,
-                boxShadow: [ // para adicionar sombra no container
-                  BoxShadow(
-                    color: const Color(0x57000000),
-                    spreadRadius: 1,
-                    blurRadius: 8,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-
-              child: Padding( // Conteúdo
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  spacing: 10,
-                  children: [
-                    Text( // Localidade
-                      "${viagem.origem} x ${viagem.destino}",
-                      style: Theme.of(context).textTheme.headlineMedium
-                          ?.copyWith(
-                            // copyWith para adicionar um estilo diferente do ThemeData
-                            color: Colors.black,
-                            fontWeight: FontWeight(700),
-                          ),
-                    ),
-                    Container( // Linha separadora
-                      height: 2,
-                      color: Colors.black,
-                    ),
-                    Text(
-                      viagem.motorista,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Text(
-                      "${viagem.horaSaida} - ${viagem.horaChegada}",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Text(
-                      "R\$ ${viagem.preco.toStringAsFixed(2)}",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    Text(
-                      viagem.endereco,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
+            return InkWell( // para tornar o container clicável
+              onTap: () => context.go('/detalhes/${viagem.id}'),
+              child: Container( // * Template para viagens
+                constraints: const BoxConstraints( // Tamanho
+                  minHeight: 200,
+                ),
+                width: double.infinity,
+                margin: EdgeInsets.only(left: 15, right: 15, bottom: 20),
+              
+                decoration: BoxDecoration( // Estilo
+                  borderRadius: BorderRadius.circular(15.0),
+                  color: Colors.white,
+                  boxShadow: [ // para adicionar sombra no container
+                    BoxShadow(
+                      color: const Color(0x57000000),
+                      spreadRadius: 1,
+                      blurRadius: 8,
+                      offset: const Offset(0, 6),
                     ),
                   ],
+                ),
+              
+                child: Padding( // Conteúdo
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    spacing: 10,
+                    children: [
+                      Text( // Localidade
+                        "${viagem.origem} x ${viagem.destino}",
+                        style: Theme.of(context).textTheme.headlineMedium
+                            ?.copyWith(
+                              // copyWith para adicionar um estilo diferente do ThemeData
+                              color: Colors.black,
+                              fontWeight: FontWeight(700),
+                            ),
+                      ),
+                      Divider( // Linha separadora
+                        thickness: 2,
+                        color: Colors.black,
+                      ),
+                      Text(
+                        viagem.motorista,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        "${viagem.horaSaida} - ${viagem.horaChegada}",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Text(
+                        "R\$ ${viagem.preco.toStringAsFixed(2)}",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Text(
+                        viagem.endereco,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
