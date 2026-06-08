@@ -15,6 +15,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context); // para a integração do google maps, posição do user
 
+    //if (userProvider.tipo != UserType.visitante) {
+      
+    //}
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70, // altura da appbar
@@ -24,11 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
         surfaceTintColor: Colors.transparent, // desativa o efeito de escurecer a cor de fundo
 
         leadingWidth: 70,
-        leading: IconButton( // icone antes do titulo
-          icon: const Icon(Icons.menu_rounded),
-          iconSize: 44,
-          onPressed: () {context.go('/');},
-          color: Colors.white,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton( // icone antes do titulo
+              icon: const Icon(Icons.menu_rounded),
+              iconSize: 44,
+              onPressed: Scaffold.of(context).openDrawer,
+              color: Colors.white,
+            );
+          },
         ),
 
         title: Text(
@@ -57,13 +65,101 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+
+      drawer: Drawer( // * Menu
+        backgroundColor: Colors.white,
+        child: ListView(
+          children: [
+            if (userProvider.tipo == UserType.visitante) ...[ // se não tiver um usuário logado
+              SizedBox(
+                height: 120,
+                child: DrawerHeader(
+                  child: Row(
+                    spacing: 20,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(1.5),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          shape: BoxShape.circle
+                        ),
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 35,
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => context.go('/'),
+                        child: Row(
+                          spacing: 5,
+                          children: [
+                            Text(
+                              "Fazer Login",
+                              style: Theme.of(context).textTheme.headlineSmall   
+                            ),
+                            Icon(Icons.arrow_forward)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ]
+            else ...[
+              SizedBox(
+                height: 170,
+                child: UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.white
+                  ),
+                  accountName: Text(userProvider.nome, style: TextStyle(color: Colors.black),),
+                  accountEmail: SizedBox.shrink(),
+                  currentAccountPicture: CircleAvatar(
+                    child: Container(
+                      padding: const EdgeInsets.all(1.5),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 35,
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text("Sair"),
+              onTap: () => context.go('/'),
+            )
+          ],
+        ),
+      ),
+
       body: Container( // placeholder para o mapa
         height: double.infinity,
         width: double.infinity,
         color: Colors.amber.shade100,
         child: Center(child: Text("MAPA")),
       ),
-      floatingActionButton: SizedBox(
+
+      floatingActionButton: SizedBox( // leva para a página de busca
         height: 70,
         width: 180,
         child: FloatingActionButton.extended(
