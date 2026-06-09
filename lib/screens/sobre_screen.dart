@@ -13,8 +13,12 @@ O Sobe aí! tem o objetivo de conectar pessoas que precisam se deslocar de um lu
         spacing: 10,
         children: [
           Container(
-            height: 120,
-            width: 120,
+            constraints: BoxConstraints(
+              minHeight: 100,
+              minWidth: 100,
+              maxHeight: 120,
+              maxWidth: 120,
+            ),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Theme.of(context).primaryColor
@@ -54,26 +58,28 @@ O Sobe aí! tem o objetivo de conectar pessoas que precisam se deslocar de um lu
         ),
         centerTitle: true, // para centralizar o título
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 64.0, vertical: 30),
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           spacing: 50,
           children: [
-            Text( // * texto informativo
-              texto, 
-              textAlign: TextAlign.center,
-              style: TextTheme.of(context).bodyLarge,  
+            SizedBox(height: 12,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 44, vertical: 0),
+              child: Text( // * texto informativo
+                texto, 
+                textAlign: TextAlign.center,
+                style: TextTheme.of(context).bodyLarge,  
+              ),
             ),
             Text( // * Subtítulo 
               "Nosso Time", 
               style: TextTheme.of(context).headlineMedium?.copyWith(color: Colors.black),
             ),
             SizedBox( // * Grade com fotos dos membros
-              height: 350,
               width: double.infinity,
               child: Column(
-                spacing: 40,
+                spacing: 30,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -97,6 +103,7 @@ O Sobe aí! tem o objetivo de conectar pessoas que precisam se deslocar de um lu
                 ],
               ),
             ),
+            SizedBox(height: 12,),
           ],
         ),
       ),
