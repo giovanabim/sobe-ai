@@ -8,6 +8,7 @@ import 'screens/inicial_screen.dart'; // tela inicial
 import 'screens/home_screen.dart'; // tela principal
 import 'screens/procurar_viagens_screen.dart'; // tela de busca
 import 'screens/detalhes_viagem_screen.dart'; // tela de detalhes da viagem
+import 'screens/sobre_screen.dart'; // tela de informações sobre o projeto
 
 void main() {
   runApp(
@@ -45,6 +46,10 @@ class MainApp extends StatelessWidget {
           final viagemId = state.pathParameters['id']; 
           return DetalhesViagemScreen(id: viagemId);
         },
+      ),
+      GoRoute(
+        path: '/sobre',
+        builder: (context, state) => const SobreScreen(),
       ),
       // repetir a mesma estrutura para outras rotas
     ]

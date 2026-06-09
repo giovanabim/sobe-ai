@@ -68,36 +68,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
       drawer: Drawer( // * Menu
         backgroundColor: Colors.white,
+        width: 350,
         child: ListView(
           children: [
-            if (userProvider.tipo == UserType.visitante) ...[ // se não tiver um usuário logado
-              SizedBox(
-                height: 120,
-                child: DrawerHeader(
+            SizedBox(
+              height: 110,
+              child: InkWell(
+                focusColor: Theme.of(context).hoverColor,
+                onTap: () => context.go('/'),
+                child: DrawerHeader( 
+                  margin: EdgeInsets.only(bottom: 0),
                   child: Row(
                     spacing: 20,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(1.5),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          shape: BoxShape.circle
-                        ),
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 35,
-                          child: Icon(
-                            Icons.person,
-                            size: 50,
-                            color: Colors.black,
-                          ),
+                      CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        radius: 35,
+                        child: Icon(
+                          Icons.person,
+                          size: 50,
+                          color: Colors.white,
                         ),
                       ),
-                      InkWell(
-                        onTap: () => context.go('/'),
-                        child: Row(
+                      if (userProvider.tipo == UserType.visitante) ...[ // se não estiver logado
+                        Row(
                           spacing: 5,
                           children: [
                             Text(
@@ -107,42 +103,38 @@ class _HomeScreenState extends State<HomeScreen> {
                             Icon(Icons.arrow_forward)
                           ],
                         ),
-                      ),
+                      ]
+                      else ... [ // se estiver logado (vou ter que mudar a parte do provider específico)
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              userProvider.nome,
+                              style: Theme.of(context).textTheme.headlineSmall   
+                            ),
+                            Text(
+                              "email@gmail.com",
+                              style: Theme.of(context).textTheme.bodyMedium,   
+                            ),
+                          ],
+                        ),
+                      ],
                     ],
                   ),
                 ),
-              )
-            ]
-            else ...[
-              SizedBox(
-                height: 170,
-                child: UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.white
-                  ),
-                  accountName: Text(userProvider.nome, style: TextStyle(color: Colors.black),),
-                  accountEmail: SizedBox.shrink(),
-                  currentAccountPicture: CircleAvatar(
-                    child: Container(
-                      padding: const EdgeInsets.all(1.5),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        shape: BoxShape.circle
-                      ),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 35,
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.search),
+              title: const Text("Procurar Viagens"),
+              onTap: () => context.go('/procurar'),
+            ),
+            ListTile( 
+              leading: const Icon(Icons.question_mark_outlined),
+              title: const Text("Sobre"),
+              onTap: () => context.go('/sobre'),
+            ),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text("Sair"),
