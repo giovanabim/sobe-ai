@@ -9,6 +9,7 @@ import 'screens/home_screen.dart'; // tela principal
 import 'screens/procurar_viagens_screen.dart'; // tela de busca
 import 'screens/detalhes_viagem_screen.dart'; // tela de detalhes da viagem
 import 'screens/sobre_screen.dart'; // tela de informações sobre o projeto
+import 'screens/cadastro_passageiro_screen.dart';
 
 void main() {
   runApp(
@@ -51,6 +52,10 @@ class MainApp extends StatelessWidget {
         path: '/sobre',
         builder: (context, state) => const SobreScreen(),
       ),
+      GoRoute(
+        path: '/cadastrar/passageiro',
+        builder: (context, state) => CadPassageiroScreen(),
+      ),
       // repetir a mesma estrutura para outras rotas
     ]
   );
@@ -92,6 +97,28 @@ class MainApp extends StatelessWidget {
             fontWeight: FontWeight(300)
           )
         ),
+
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8)
+            )
+          )
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF86B499),
+            foregroundColor: Colors.white,
+            textStyle: TextStyle(
+              fontFamily: "Lexend",
+              fontSize: 24,
+              fontWeight: FontWeight(600)
+            )
+          )
+        )
       ),
     );
   }
