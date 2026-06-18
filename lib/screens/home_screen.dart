@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/user_provider.dart';
+import '../providers/auth_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,11 +13,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context); // para a integração do google maps, posição do user
-
-    //if (userProvider.tipo != UserType.visitante) {
-      
-    //}
+    final userProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -92,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      if (userProvider.tipo == UserType.visitante) ...[ // se não estiver logado
+                      if (userProvider.user == null) ...[ // se não estiver logado
                         Row(
                           spacing: 5,
                           children: [
@@ -104,17 +100,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ]
-                      else ... [ // se estiver logado (vou ter que mudar a parte do provider específico)
+                      else ... [ // se estiver logado 
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              userProvider.nome,
+                              userProvider.user!.nome,
                               style: Theme.of(context).textTheme.headlineSmall   
                             ),
                             Text(
-                              "email@gmail.com",
+                              userProvider.user!.email,
                               style: Theme.of(context).textTheme.bodyMedium,   
                             ),
                           ],

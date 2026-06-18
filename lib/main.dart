@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // importando pacote provider para mander estado de variáveis
 import 'package:go_router/go_router.dart'; // importando pacote go_router para navegar em telas
 
-import 'providers/user_provider.dart'; // provider dos usuários
+import 'providers/auth_provider.dart'; // provider de checagem do login
+import 'providers/user_provider_temp.dart'; // provider dos usuários
 import 'providers/viagem_provider.dart'; // provider das viagens
 import 'screens/inicial_screen.dart'; // tela inicial
 import 'screens/home_screen.dart'; // tela principal
@@ -17,6 +18,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => ViagemProvider()),  
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: MainApp(),
     ),

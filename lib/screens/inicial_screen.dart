@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/user_provider.dart';
+import '../providers/auth_provider.dart';
 
 class InicialScreen extends StatefulWidget {
   const InicialScreen({super.key});
@@ -16,7 +16,7 @@ class _InicialScreenState extends State<InicialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       body: Center(
@@ -58,9 +58,10 @@ class _InicialScreenState extends State<InicialScreen> {
                 iconSize: 60,
                 color: Colors.black,
                 onPressed: () {
-                  userProvider.atualizarEstado(_estadoUserCtrl.text.trim());
-                  userProvider.atualizarCidade(_cidadeUserCtrl.text.trim());
-
+                  userProvider.definirLocalizacao(
+                    estado: _estadoUserCtrl.text.trim(), 
+                    cidade: _cidadeUserCtrl.text.trim()
+                  );
                   context.go('/home');
                 },
               ),

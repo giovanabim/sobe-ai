@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/user_provider.dart';
+import '../providers/user_provider_temp.dart';
 
 class CadPassageiroScreen extends StatefulWidget {
   const CadPassageiroScreen({super.key});
@@ -17,7 +17,7 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final passageiroProvider = Provider.of<PassageiroProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       appBar: AppBar(

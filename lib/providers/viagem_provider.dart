@@ -45,45 +45,45 @@ class Viagem { // classe para guardar as viagens (temporário enquanto não há 
 
 class ViagemProvider extends ChangeNotifier {
   final List<Viagem> _viagens = [
-      Viagem( // Exemplo 1
+    Viagem( // Exemplo 1
       id: 0,
-      origem: "Petrolina",
-      destino: "Afrânio",
+      origem: "Cidade1",
+      destino: "Cidade2",
       motorista: "Wagner Nunes",
       preco: 35.00,
       horaSaida: "16:30",
       horaChegada: "18:30",
-      endereco: "R. Condé D'eu, 138-144 - Gercino Coelho, Petrolina-PE"
+      endereco: "R. Alegre 123, Bairro"
     ),
     Viagem( // Exemplo 2
       id: 1,
-      origem: "Petrolina",
-      destino: "Curaçá",
+      origem: "Cidade3",
+      destino: "Cidade2",
       motorista: "Luís Alencar",
       preco: 30.00,
       horaSaida: "08:00",
       horaChegada: "10:00",
-      endereco: "Avenida Transnordestina, Petrolina-PE"
+      endereco: "R. Alegre 123, Bairro"
     ),
     Viagem( // Exemplo 3
       id: 2,
-      origem: "Juazeiro",
-      destino: "Curaçá",
+      origem: "Cidade2",
+      destino: "Cidade4",
       motorista: "Wagner Nunes",
       preco: 35.00,
       horaSaida: "16:30",
       horaChegada: "18:30",
-      endereco: "R. Condé D'eu, 138-144 - Gercino Coelho, Petrolina-PE"
+      endereco: "R. Alegre 123, Bairro, Cidade, Estado, Complemento"
     ),
     Viagem( // Exemplo 4
       id: 3,
-      origem: "Uauá",
-      destino: "Petrolina",
+      origem: "Cidade4",
+      destino: "Cidade1",
       motorista: "Luís Alencar",
       preco: 30.00,
       horaSaida: "08:00",
       horaChegada: "10:00",
-      endereco: "Avenida Transnordestina, Petrolina-PE"
+      endereco: "R. Alegre 123, Bairro"
     ),
   ];
 
