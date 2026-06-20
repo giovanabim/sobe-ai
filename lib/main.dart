@@ -3,22 +3,26 @@ import 'package:provider/provider.dart'; // importando pacote provider para mand
 import 'package:go_router/go_router.dart'; // importando pacote go_router para navegar em telas
 
 import 'providers/auth_provider.dart'; // provider de checagem do login
-import 'providers/user_provider_temp.dart'; // provider dos usuários
+import 'providers/user_provider.dart'; // provider dos usuários
 import 'providers/viagem_provider.dart'; // provider das viagens
+
 import 'screens/inicial_screen.dart'; // tela inicial
 import 'screens/home_screen.dart'; // tela principal
 import 'screens/procurar_viagens_screen.dart'; // tela de busca
 import 'screens/detalhes_viagem_screen.dart'; // tela de detalhes da viagem
 import 'screens/sobre_screen.dart'; // tela de informações sobre o projeto
-import 'screens/cadastro_passageiro_screen.dart';
+import 'screens/login_screen.dart'; // tela de login
+import 'screens/cadastro_passageiro_screen.dart'; // tela de cadastro do usuário passageiro
+import 'screens/cadastro_motorista_screen.dart'; // tela de cadastro do usuário motorista
+import 'screens/cadastro_veiculo_screen.dart'; // tela de cadastro do veiculo do motorista
 
 void main() {
   runApp(
     MultiProvider( // configuração do provider
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => ViagemProvider()),  
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()), // guarda as informações dos cadastros
+        ChangeNotifierProvider(create: (_) => ViagemProvider()), // guardar as informações das viagens
+        ChangeNotifierProvider(create: (_) => AuthProvider()), // guardar a informação do usuário atual
       ],
       child: MainApp(),
     ),
@@ -55,8 +59,20 @@ class MainApp extends StatelessWidget {
         builder: (context, state) => const SobreScreen(),
       ),
       GoRoute(
+        path: '/login',
+        builder: (context, state) => LoginScreen(),
+      ),
+      GoRoute(
         path: '/cadastrar/passageiro',
         builder: (context, state) => CadPassageiroScreen(),
+      ),
+      GoRoute(
+        path: '/cadastrar/motorista',
+        builder: (context, state) => CadMotoristaScreen(),
+      ),
+      GoRoute(
+        path: '/cadastrar/veiculo',
+        builder: (context, state) => CadVeiculoScreen(),
       ),
       // repetir a mesma estrutura para outras rotas
     ]
@@ -120,7 +136,7 @@ class MainApp extends StatelessWidget {
               fontWeight: FontWeight(600)
             )
           )
-        )
+        ),
       ),
     );
   }

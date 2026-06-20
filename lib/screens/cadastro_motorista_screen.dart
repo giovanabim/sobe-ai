@@ -4,14 +4,14 @@ import 'package:go_router/go_router.dart';
 import '../providers/user_provider.dart';
 import '../providers/auth_provider.dart';
 
-class CadPassageiroScreen extends StatefulWidget {
-  const CadPassageiroScreen({super.key});
+class CadMotoristaScreen extends StatefulWidget {
+  const CadMotoristaScreen({super.key});
 
   @override
-  State<CadPassageiroScreen> createState() => _CadPassageiroScreenState();
+  State<CadMotoristaScreen> createState() => _CadMotoristaScreenState();
 }
   
-class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
+class _CadMotoristaScreenState extends State<CadMotoristaScreen> {
   final TextEditingController _nomeCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _senhaCtrl = TextEditingController();
@@ -38,7 +38,7 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
         ),
 
         title: Text( 
-            "Cadastrar Passageiro",
+            "Cadastrar Motorista",
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.black, fontSize: 26),
         ),
         centerTitle: true, // para centralizar o título
@@ -107,7 +107,7 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
               ),
               SizedBox(
                 height: 60,
-                width: 180,
+                width: 200,
                 child: ElevatedButton(
                   onPressed: () { // ! criar uma função para verificar a validade dos campos
                     if (userProvider.emailJaExiste(_emailCtrl.text)) {
@@ -119,21 +119,28 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
                         nome: _nomeCtrl.text, 
                         email: _emailCtrl.text, 
                         senha: _senhaCtrl.text, 
-                        tipo: UserType.passageiro
+                        tipo: UserType.motorista
                       );
 
                       authProvider.login(novoUsuario); // faz login no usuário
 
-                      _mostrarSnackBar(context, "Cadastro realizado com sucesso!", erro: false);
-
-                      context.go('/home');
+                      context.go('/cadastrar/veiculo');
                     }
                     else {
                       _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
                       return;
                     }
                   },
-                  child: Text("Cadastrar"),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Continuar"),
+                      Icon(
+                        Icons.arrow_forward,
+                        size: 25,
+                      )
+                    ],
+                  ),
                 ),
               ),
               Container(

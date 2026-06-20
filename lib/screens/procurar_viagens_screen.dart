@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../providers/viagem_provider.dart';
-import '../providers/user_provider.dart';
+import '../providers/auth_provider.dart';
 
 class ProcurarViagensScreen extends StatefulWidget {
   const ProcurarViagensScreen({super.key});
@@ -18,7 +18,7 @@ class _ProcurarViagensScreenState extends State<ProcurarViagensScreen> {
   @override
   Widget build(BuildContext context) {
     final viagemProvider = Provider.of<ViagemProvider>(context); // para exibir as viagens disponíveis
-    final userProvider = Provider.of<UserProvider>(context); // para saber a cidade do usuário
+    final userProvider = Provider.of<AuthProvider>(context); // para saber a cidade do usuário
 
     final viagensFiltradas = _pesquisa.text.isEmpty // resultados do mecanismo de filtragem
     ? viagemProvider.viagens.where((viagem) => viagem.origem == userProvider.cidade).toList() 
@@ -119,11 +119,12 @@ class _ProcurarViagensScreenState extends State<ProcurarViagensScreen> {
                       Text( // Localidade
                         "${viagem.origem} x ${viagem.destino}",
                         style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(
-                              // copyWith para adicionar um estilo diferente do ThemeData
-                              color: Colors.black,
-                              fontWeight: FontWeight(700),
-                            ),
+                          ?.copyWith(
+                            // copyWith para adicionar um estilo diferente do ThemeData
+                            color: Colors.black,
+                            fontWeight: FontWeight(700),
+                          ),
+                        textAlign: TextAlign.center,
                       ),
                       Divider( // Linha separadora
                         thickness: 2,

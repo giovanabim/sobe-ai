@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'user_provider_temp.dart';
+import 'user_provider.dart';
 
 class AuthProvider extends ChangeNotifier {
   Usuario? _user;

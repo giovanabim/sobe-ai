@@ -47,43 +47,43 @@ class ViagemProvider extends ChangeNotifier {
   final List<Viagem> _viagens = [
     Viagem( // Exemplo 1
       id: 0,
-      origem: "Cidade1",
-      destino: "Cidade2",
+      origem: "Petrolina",
+      destino: "Afrânio",
       motorista: "Wagner Nunes",
       preco: 35.00,
       horaSaida: "16:30",
       horaChegada: "18:30",
-      endereco: "R. Alegre 123, Bairro"
+      endereco: "Avenida Ipiranga, República, 01039906, Petrolina-PE"
     ),
     Viagem( // Exemplo 2
       id: 1,
-      origem: "Cidade3",
-      destino: "Cidade2",
+      origem: "Petrolina",
+      destino: "Uauá",
       motorista: "Luís Alencar",
       preco: 30.00,
       horaSaida: "08:00",
       horaChegada: "10:00",
-      endereco: "R. Alegre 123, Bairro"
+      endereco: "R. Alegre 123, Petrolina-PE"
     ),
     Viagem( // Exemplo 3
       id: 2,
-      origem: "Cidade2",
-      destino: "Cidade4",
+      origem: "Juazeiro",
+      destino: "Curaçá",
       motorista: "Wagner Nunes",
       preco: 35.00,
       horaSaida: "16:30",
       horaChegada: "18:30",
-      endereco: "R. Alegre 123, Bairro, Cidade, Estado, Complemento"
+      endereco: "Praça Ramos de Azevedo, Centro, Juazeiro-BA"
     ),
     Viagem( // Exemplo 4
       id: 3,
-      origem: "Cidade4",
-      destino: "Cidade1",
+      origem: "Juazeiro",
+      destino: "Sobradinho",
       motorista: "Luís Alencar",
       preco: 30.00,
       horaSaida: "08:00",
       horaChegada: "10:00",
-      endereco: "R. Alegre 123, Bairro"
+      endereco: "Rua Wilfrides Alves de Lima, Juazeiro-BA"
     ),
   ];
 

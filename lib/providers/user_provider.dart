@@ -1,86 +1,172 @@
 import 'package:flutter/material.dart';
 
-enum UserType {
-  visitante,
-  passageiro,
-  motorista
+enum UserType {passageiro, motorista} // define o tipo de usuário -> afeta acesso à funções específicas
+
+class Usuario {
+  final int id;
+  final String nome;
+  final String email;
+  final String senha;
+  final UserType tipo;
+
+  final String? cnh;
+  final String? modeloVeiculo;
+  final String? placaVeiculo;
+
+  Usuario({
+    required this.id,
+    required this.nome,
+    required this.email,
+    required this.senha,
+    required this.tipo,
+
+    this.cnh,
+    this.modeloVeiculo,
+    this.placaVeiculo,
+  });
+
+  Usuario copyWith({ // para mudar alguma informação do cadastro
+    String? nome,
+    String? email,
+    String? senha,
+    UserType? tipo,
+    String? cnh,
+    String? modeloVeiculo,
+    String? placaVeiculo,
+  }) {
+    return Usuario(
+      id: id,
+      nome: nome ?? this.nome,
+      email: email ?? this.email,
+      senha: senha ?? this.senha,
+      tipo: tipo ?? this.tipo,
+      cnh: cnh ?? this.cnh,
+      modeloVeiculo: modeloVeiculo ?? this.modeloVeiculo,
+      placaVeiculo: placaVeiculo ?? this.placaVeiculo,
+    );
+  }
 }
 
 class UserProvider extends ChangeNotifier {
-  // Para referencia:
-  // tipo _nome = valor;
-  // tipo get nome => _nome;
-  // set nome(tipo valor) {
-  //    _nome = valor;
-  //    notifyListeners();
-  // }
-  // void atualizarNome(tipo novoValor) {
-  //    _nome = novoValor;
-  //    notifyListeners();   
-  // }
+  final List<Usuario> _usuarios = [
+    // Conta de passageiro para testes
+    Usuario(
+      id: 0,
+      nome: "Maria Silva",
+      email: "silvamaria@gmail.com",
+      senha: "123456",
+      tipo: UserType.passageiro,
+    ),
 
-  // Variáveis da Página Inicial
-  UserType _tipo = UserType.visitante;
+    // Conta de motorista para testes
+    Usuario(
+      id: 1,
+      nome: "Wagner Nunes",
+      email: "nunesvans@gmail.com",
+      senha: "123456",
+      tipo: UserType.motorista,
+      cnh: "123456789",
+      modeloVeiculo: "HB20",
+      placaVeiculo: "ABC1234",
+    ),
+  ];
 
-  String _nome = "Teste";
-  String _estado = "";
-  String _cidade = "";
+  int _proximoId = 2;
 
-  UserType get tipo => _tipo;
+  List<Usuario> get usuarios => List.unmodifiable(_usuarios);
 
-  String get nome => _nome;
-  String get estado => _estado;
-  String get cidade => _cidade;
+  Usuario cadastrarUsuario({
+    required String nome,
+    required String email,
+    required String senha,
+    required UserType tipo,
 
-  set tipo(UserType tipo) {
-    _tipo = tipo;
+    String? cnh,
+    String? modeloVeiculo,
+    String? placaVeiculo,
+  }) {
+    final novoUsuario = Usuario(
+      id: _proximoId++,
+      nome: nome,
+      email: email,
+      senha: senha,
+      tipo: tipo,
+      cnh: cnh,
+      modeloVeiculo: modeloVeiculo,
+      placaVeiculo: placaVeiculo,
+    );
+
+    _usuarios.add(novoUsuario);
+
+    notifyListeners();
+
+    return novoUsuario;
+  }
+
+  void removerUsuario(int id) {
+    _usuarios.removeWhere((usuario) => usuario.id == id,);
     notifyListeners();
   }
 
-  set nome(String valor) {
-    _nome = valor.trim();
-    notifyListeners();
-  }
-  set estado(String valor) {
-    _estado = valor;
-    notifyListeners();
-  }
-  set cidade(String valor) {
-    _cidade = valor;
-    notifyListeners();
+  Usuario? buscarPorId(int id) {
+    try {
+      return _usuarios.firstWhere(
+        (usuario) => usuario.id == id,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
-  void atualizarTipo(UserType novoTipo) {
-    _tipo = novoTipo;
+  Usuario? autenticar(String email, String senha) {
+    try {
+      return _usuarios.firstWhere(
+        (usuario) =>
+            usuario.email == email &&
+            usuario.senha == senha,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool emailJaExiste(String email) {
+    return _usuarios.any(
+      (usuario) =>
+          usuario.email.toLowerCase() ==
+          email.toLowerCase(),
+    );
+  }
+
+  void atualizarUsuario({
+    required int id,
+
+    String? nome,
+    String? email,
+    String? senha,
+
+    UserType? tipo,
+
+    String? cnh,
+    String? modeloVeiculo,
+    String? placaVeiculo,
+  }) {
+    final index = _usuarios.indexWhere(
+      (usuario) => usuario.id == id,
+    );
+
+    if (index < 0) return;
+
+    _usuarios[index] = _usuarios[index].copyWith(
+      nome: nome,
+      email: email,
+      senha: senha,
+      tipo: tipo,
+      cnh: cnh,
+      modeloVeiculo: modeloVeiculo,
+      placaVeiculo: placaVeiculo,
+    );
+
     notifyListeners();
-  }
-
-  void atualizarNome(String novoNome) {
-    _nome = novoNome;
-    notifyListeners();
-  }
-  void atualizarEstado(String novoEstado) {
-    _estado = novoEstado;
-    notifyListeners();
-  }
-  void atualizarCidade(String novaCidade) {
-    _cidade = novaCidade;
-    notifyListeners();
-  }
-}
-
-class PassageiroProvider extends ChangeNotifier {
-  final UserProvider user;
-
-  PassageiroProvider(this.user) {
-    user.tipo = UserType.passageiro;
-  }
-}
-
-class MotoristaProvider extends ChangeNotifier {
-  final UserProvider user;
-
-  MotoristaProvider(this.user) {
-    user.tipo = UserType.motorista;
   }
 }

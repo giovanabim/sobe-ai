@@ -3,22 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/user_provider.dart';
 import '../providers/auth_provider.dart';
-
-class CadPassageiroScreen extends StatefulWidget {
-  const CadPassageiroScreen({super.key});
-
-  @override
-  State<CadPassageiroScreen> createState() => _CadPassageiroScreenState();
-}
   
-class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
-  final TextEditingController _nomeCtrl = TextEditingController();
+class LoginScreen extends StatelessWidget {
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _senhaCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context); // para guardar as informações do usuário cadastrado
+    final userProvider = Provider.of<UserProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context); // para marcar o usuário cadastrado como atual
 
     return Scaffold(
@@ -38,7 +30,7 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
         ),
 
         title: Text( 
-            "Cadastrar Passageiro",
+            "Fazer Login",
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.black, fontSize: 26),
         ),
         centerTitle: true, // para centralizar o título
@@ -52,46 +44,22 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
             spacing: 28,
             children: [
               Text(
-                "Bem vindo(a)!",
+                "Bom te ver de novo!",
                 style: TextTheme.of(context).headlineMedium?.copyWith(color: Colors.black),
               ),
-              CircleAvatar( // * foto de perfil
-                backgroundColor: Theme.of(context).primaryColor,
-                radius: 70,
-                child: Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Colors.white,
-                ),
+              SizedBox( // logo sobe aí!
+                height: 200,
+                width: 140,
+                child: Image.asset("assets/imagens/sobe_ai_logo.png")
               ),
-              SizedBox( // * Botão de upload para foto de perfil
-                width: 235,
-                child: OutlinedButton(
-                  onPressed: () {}, 
-                  child: Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.upload),
-                      const Text("Escolher Foto de Perfil")
-                    ],
-                  )
-                ),
-              ),
-              SizedBox( // * input do nome
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _nomeCtrl,
-                  decoration: InputDecoration(labelText: "Nome"),
-                ),
-              ),
+              SizedBox(height: 10,),
               SizedBox( // * input do email
                 width: 250,
                 height: 50,
                 child: TextField( 
                   controller: _emailCtrl,
                   decoration: InputDecoration(labelText: "Email"),
+                  //onChanged: (_) => setState(() {}), // para recarregar a página quando algo for digitado
                 ),
               ),
               SizedBox( // * input da senha
@@ -100,6 +68,7 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
                 child: TextField( 
                   controller: _senhaCtrl,
                   decoration: InputDecoration(labelText: "Senha"),
+                  //onChanged: (_) => setState(() {}), // para recarregar a página quando algo for digitado
                 ),
               ),
               SizedBox(
@@ -110,30 +79,21 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
                 width: 180,
                 child: ElevatedButton(
                   onPressed: () { // ! criar uma função para verificar a validade dos campos
-                    if (userProvider.emailJaExiste(_emailCtrl.text)) {
-                      _mostrarSnackBar(context, "Esse email já está em uso.", erro: true);
-                      return;
-                    }
-                    else if (_nomeCtrl.text.isNotEmpty && _emailCtrl.text.isNotEmpty && _senhaCtrl.text.isNotEmpty) { // se todos os campos estiverem corretos, cadastra o usuário
-                      final novoUsuario = userProvider.cadastrarUsuario( // salva as informações do cadastro
-                        nome: _nomeCtrl.text, 
-                        email: _emailCtrl.text, 
-                        senha: _senhaCtrl.text, 
-                        tipo: UserType.passageiro
-                      );
-
-                      authProvider.login(novoUsuario); // faz login no usuário
-
-                      _mostrarSnackBar(context, "Cadastro realizado com sucesso!", erro: false);
-
-                      context.go('/home');
-                    }
-                    else {
+                    if (_emailCtrl.text.isEmpty || _senhaCtrl.text.isEmpty) { // se algum dos campos estiver vazio
                       _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
                       return;
                     }
+                    final novoUsuario = userProvider.autenticar(_emailCtrl.text, _senhaCtrl.text);
+                    if (novoUsuario != null) {
+                      authProvider.login(novoUsuario); // faz login no usuário
+                      _mostrarSnackBar(context, "Login realizado com sucesso!", erro: false);
+                      context.go('/home');
+                    }
+                    else {
+                      _mostrarSnackBar(context, "Email ou senha incorretos.", erro: true);
+                    }
                   },
-                  child: Text("Cadastrar"),
+                  child: Text("Entrar"),
                 ),
               ),
               Container(
@@ -143,16 +103,16 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(20))
                 ),
                 child: InkWell(
-                  onTap: () => context.go('/login'),
+                  onTap: () => context.go('/cadastrar/passageiro'),
                   child: Row(
                     spacing: 5,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Icon(Icons.arrow_back),
                       Text(
-                        "Já possui conta?",
+                        "Não Possui conta?",
                         style: TextTheme.of(context).headlineSmall,
                       ),
-                      Icon(Icons.arrow_forward)
                     ],
                   ),
                 ),

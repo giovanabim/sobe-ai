@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 110,
               child: InkWell(
                 focusColor: Theme.of(context).hoverColor,
-                onTap: () => context.go('/'),
+                onTap: () => context.go('/login'), // ! Adicionar diferença entre user com ou sem conta
                 child: DrawerHeader( 
                   margin: EdgeInsets.only(bottom: 0),
                   child: Row(
@@ -120,6 +120,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+            ),
+            ExpansionTile(
+              leading: const Icon(Icons.person, color: Colors.black,),
+              title: const Text("Cadastre-se"),
+              children: <Widget> [
+                ListTile(
+                  title: const Text("Se Cadastrar como Passageiro"),
+                  onTap: () => context.go('/cadastrar/passageiro'),
+                ),
+                ListTile(
+                  title: const Text("Se Cadastrar como Motorista"),
+                  onTap: () => context.go('/cadastrar/motorista'),
+                ),
+              ],
             ),
             ListTile(
               leading: const Icon(Icons.search),

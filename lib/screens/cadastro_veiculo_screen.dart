@@ -4,15 +4,15 @@ import 'package:go_router/go_router.dart';
 import '../providers/user_provider.dart';
 import '../providers/auth_provider.dart';
 
-class CadPassageiroScreen extends StatefulWidget {
-  const CadPassageiroScreen({super.key});
+class CadVeiculoScreen extends StatefulWidget {
+  const CadVeiculoScreen({super.key});
 
   @override
-  State<CadPassageiroScreen> createState() => _CadPassageiroScreenState();
+  State<CadVeiculoScreen> createState() => _CadVeiculoScreenState();
 }
   
-class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
-  final TextEditingController _nomeCtrl = TextEditingController();
+class _CadVeiculoScreenState extends State<CadVeiculoScreen> {
+  final TextEditingController _nomeCtrl = TextEditingController(); // ! mudar esses ctrls
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _senhaCtrl = TextEditingController();
 
@@ -38,7 +38,7 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
         ),
 
         title: Text( 
-            "Cadastrar Passageiro",
+            "Cadastrar Veiculo",
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.black, fontSize: 26),
         ),
         centerTitle: true, // para centralizar o título
@@ -51,10 +51,6 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 28,
             children: [
-              Text(
-                "Bem vindo(a)!",
-                style: TextTheme.of(context).headlineMedium?.copyWith(color: Colors.black),
-              ),
               CircleAvatar( // * foto de perfil
                 backgroundColor: Theme.of(context).primaryColor,
                 radius: 70,
@@ -78,12 +74,12 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
                   )
                 ),
               ),
-              SizedBox( // * input do nome
+              SizedBox( // * input do CPF
                 width: 250,
                 height: 50,
                 child: TextField( 
                   controller: _nomeCtrl,
-                  decoration: InputDecoration(labelText: "Nome"),
+                  decoration: InputDecoration(labelText: "CPF"),
                 ),
               ),
               SizedBox( // * input do email
@@ -107,7 +103,7 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
               ),
               SizedBox(
                 height: 60,
-                width: 180,
+                width: 200,
                 child: ElevatedButton(
                   onPressed: () { // ! criar uma função para verificar a validade dos campos
                     if (userProvider.emailJaExiste(_emailCtrl.text)) {
@@ -133,7 +129,16 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
                       return;
                     }
                   },
-                  child: Text("Cadastrar"),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Continuar"),
+                      Icon(
+                        Icons.arrow_forward,
+                        size: 25,
+                      )
+                    ],
+                  ),
                 ),
               ),
               Container(
