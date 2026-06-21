@@ -5,6 +5,8 @@ import '../providers/user_provider.dart';
 import '../providers/auth_provider.dart';
   
 class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
+
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _senhaCtrl = TextEditingController();
 

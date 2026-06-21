@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      if (userProvider.user == null) ...[ // se não estiver logado
+                      if (!userProvider.estaLogado) ...[ // se não estiver logado
                         Row(
                           spacing: 5,
                           children: [
@@ -121,20 +121,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            ExpansionTile(
-              leading: const Icon(Icons.person, color: Colors.black,),
-              title: const Text("Cadastre-se"),
-              children: <Widget> [
-                ListTile(
-                  title: const Text("Se Cadastrar como Passageiro"),
-                  onTap: () => context.go('/cadastrar/passageiro'),
-                ),
-                ListTile(
-                  title: const Text("Se Cadastrar como Motorista"),
-                  onTap: () => context.go('/cadastrar/motorista'),
-                ),
-              ],
-            ),
+            if (!userProvider.estaLogado) ...[
+              ExpansionTile(
+                leading: const Icon(Icons.person, color: Colors.black,),
+                title: const Text("Cadastre-se"),
+                children: <Widget> [
+                  ListTile(
+                    title: const Text("Se Cadastrar como Passageiro"),
+                    onTap: () => context.go('/cadastrar/passageiro'),
+                  ),
+                  ListTile(
+                    title: const Text("Se Cadastrar como Motorista"),
+                    onTap: () => context.go('/cadastrar/motorista'),
+                  ),
+                ],
+              ),
+            ],
             ListTile(
               leading: const Icon(Icons.search),
               title: const Text("Procurar Viagens"),

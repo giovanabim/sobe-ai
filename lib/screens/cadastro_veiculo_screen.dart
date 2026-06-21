@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/user_provider.dart';
@@ -12,14 +13,18 @@ class CadVeiculoScreen extends StatefulWidget {
 }
   
 class _CadVeiculoScreenState extends State<CadVeiculoScreen> {
-  final TextEditingController _nomeCtrl = TextEditingController(); // ! mudar esses ctrls
-  final TextEditingController _emailCtrl = TextEditingController();
-  final TextEditingController _senhaCtrl = TextEditingController();
+  final TextEditingController _placaCtrl = TextEditingController();
+  final TextEditingController _modeloCtrl = TextEditingController();
+  final TextEditingController _qtdAssentosCtrl = TextEditingController(text: "0");
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context); // para guardar as informações do usuário cadastrado
     final authProvider = Provider.of<AuthProvider>(context); // para marcar o usuário cadastrado como atual
+
+    if (!authProvider.estaLogado) { // vai acontecer quando os botões de voltar forem disparados
+      return const SizedBox.shrink();
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +38,12 @@ class _CadVeiculoScreenState extends State<CadVeiculoScreen> {
         leading: IconButton( // icone antes do titulo
           icon: const Icon(Icons.arrow_back),
           iconSize: 44,
-          onPressed: () {context.go('/home');},
+          onPressed: () {
+            int idAtual = authProvider.user!.id; // guarda o id do cadastro motorista atual
+            authProvider.logout(); // sai da conta atual -> cadastro motorista incompleto
+            userProvider.removerUsuario(idAtual); // apaga as informações do cadastro do motorista -> cadastro incompleto
+            context.go('/home'); // volta para página de cadastro de motorista
+          },
           color: Colors.black,
         ),
 
@@ -44,125 +54,143 @@ class _CadVeiculoScreenState extends State<CadVeiculoScreen> {
         centerTitle: true, // para centralizar o título
       ),
 
-      body: Padding(
-        padding: EdgeInsets.all(32),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 28,
-            children: [
-              CircleAvatar( // * foto de perfil
-                backgroundColor: Theme.of(context).primaryColor,
-                radius: 70,
-                child: Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: Center(
+            child: Column(
+              spacing: 28,
+              children: [
+                SizedBox(height: 12,),
+                Text(
+                  "Insira as informações do seu veículo!",
+                  style: TextTheme.of(context).headlineSmall?.copyWith(fontSize: 25),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              SizedBox( // * Botão de upload para foto de perfil
-                width: 235,
-                child: OutlinedButton(
-                  onPressed: () {}, 
-                  child: Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.upload),
-                      const Text("Escolher Foto de Perfil")
-                    ],
-                  )
-                ),
-              ),
-              SizedBox( // * input do CPF
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _nomeCtrl,
-                  decoration: InputDecoration(labelText: "CPF"),
-                ),
-              ),
-              SizedBox( // * input do email
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _emailCtrl,
-                  decoration: InputDecoration(labelText: "Email"),
-                ),
-              ),
-              SizedBox( // * input da senha
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _senhaCtrl,
-                  decoration: InputDecoration(labelText: "Senha"),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 60,
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () { // ! criar uma função para verificar a validade dos campos
-                    if (userProvider.emailJaExiste(_emailCtrl.text)) {
-                      _mostrarSnackBar(context, "Esse email já está em uso.", erro: true);
-                      return;
-                    }
-                    else if (_nomeCtrl.text.isNotEmpty && _emailCtrl.text.isNotEmpty && _senhaCtrl.text.isNotEmpty) { // se todos os campos estiverem corretos, cadastra o usuário
-                      final novoUsuario = userProvider.cadastrarUsuario( // salva as informações do cadastro
-                        nome: _nomeCtrl.text, 
-                        email: _emailCtrl.text, 
-                        senha: _senhaCtrl.text, 
-                        tipo: UserType.passageiro
-                      );
-
-                      authProvider.login(novoUsuario); // faz login no usuário
-
-                      _mostrarSnackBar(context, "Cadastro realizado com sucesso!", erro: false);
-
-                      context.go('/home');
-                    }
-                    else {
-                      _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
-                      return;
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Continuar"),
-                      Icon(
-                        Icons.arrow_forward,
-                        size: 25,
-                      )
-                    ],
+                CircleAvatar( // * foto de perfil
+                  backgroundColor: Theme.of(context).primaryColor,
+                  radius: 70,
+                  child: Icon(
+                    Icons.person,
+                    size: 80,
+                    color: Colors.white,
                   ),
                 ),
-              ),
-              Container(
-                width: 200,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20))
+                Text(
+                  authProvider.user!.nome,
+                  style: TextTheme.of(context).headlineSmall,
                 ),
-                child: InkWell(
-                  onTap: () => context.go('/login'),
-                  child: Row(
-                    spacing: 5,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Já possui conta?",
-                        style: TextTheme.of(context).headlineSmall,
+                SizedBox( // * input da placa
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _placaCtrl,
+                    decoration: InputDecoration(labelText: "Placa"),
+                  ),
+                ), // ? Talvez adicionar algum comprovante do veículo?
+                SizedBox( // * input do modelo
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _modeloCtrl,
+                    decoration: InputDecoration(labelText: "Modelo"),
+                  ),
+                ), 
+                Text(
+                  "Quantidade de Assentos:", 
+                  style: TextTheme.of(context).bodyLarge, 
+                  textAlign: TextAlign.center,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        int n = int.tryParse(_qtdAssentosCtrl.text) ?? 0;
+                        _qtdAssentosCtrl.text = (_qtdAssentosCtrl.text.isNotEmpty && n > 0) ? 
+                        (int.parse(_qtdAssentosCtrl.text) - 1).toString()
+                        : "0";
+                        // checa se o campo não está vazio ou se é maior que 0
+                        // Se sim: subtrai um
+                        // Se não: guarda 0
+                        setState(() {});
+                      }, 
+                      icon: Icon(Icons.minimize, size: 30,),
+                    ),
+                    SizedBox(
+                      width: 60,
+                      child: TextField(
+                        controller: _qtdAssentosCtrl,
+                        textAlign: TextAlign.center,
+                        inputFormatters: [ // não permite numeros negativos ou decimais
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                       ),
-                      Icon(Icons.arrow_forward)
-                    ],
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        _qtdAssentosCtrl.text = (_qtdAssentosCtrl.text.isNotEmpty) ?
+                        (int.parse(_qtdAssentosCtrl.text) + 1).toString()
+                        : "1";
+                        setState(() {});
+                      }, 
+                      icon: Icon(Icons.add, size: 30,)
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox( // * Botão Cadastrar
+                  height: 60,
+                  width: 180,
+                  child: ElevatedButton(
+                    onPressed: () { // TODO criar uma função para verificar a validade dos campos
+                      if (_placaCtrl.text.isNotEmpty && _modeloCtrl.text.isNotEmpty) { // se todos os campos estiverem corretos, cadastra o usuário
+                        userProvider.atualizarUsuario(
+                          id: authProvider.user!.id,
+                          placaVeiculo: _placaCtrl.text,
+                          modeloVeiculo: _modeloCtrl.text,
+                          qtdAssentos: int.parse(_qtdAssentosCtrl.text),
+                        ); // altera as informações do usuário
+        
+                        _mostrarSnackBar(context, "Cadastro realizado com sucesso!", erro: false);
+        
+                        context.go('/home');
+                      }
+                      else {
+                        _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
+                        return;
+                      }
+                    },
+                    child: Text("Cadastrar"),
                   ),
                 ),
-              )
-            ],
+                SizedBox( // * Botão Voltar
+                  height: 60,
+                  width: 180,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      int idAtual = authProvider.user!.id; // guarda o id do cadastro motorista atual
+                      authProvider.logout(); // sai da conta atual -> cadastro motorista incompleto
+                      userProvider.removerUsuario(idAtual); // apaga as informações do cadastro do motorista -> cadastro incompleto
+                      context.go('/cadastrar/motorista'); // volta para página de cadastro de motorista
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          Icons.arrow_back,
+                          size: 25,
+                        ),
+                        Expanded(
+                          child: Center(child: Text("Voltar"),),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

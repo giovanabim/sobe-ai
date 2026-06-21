@@ -12,6 +12,7 @@ class Usuario {
   final String? cnh;
   final String? modeloVeiculo;
   final String? placaVeiculo;
+  final int? qtdAssentos;
 
   Usuario({
     required this.id,
@@ -23,6 +24,7 @@ class Usuario {
     this.cnh,
     this.modeloVeiculo,
     this.placaVeiculo,
+    this.qtdAssentos,
   });
 
   Usuario copyWith({ // para mudar alguma informação do cadastro
@@ -33,6 +35,7 @@ class Usuario {
     String? cnh,
     String? modeloVeiculo,
     String? placaVeiculo,
+    int? qtdAssentos,
   }) {
     return Usuario(
       id: id,
@@ -43,6 +46,7 @@ class Usuario {
       cnh: cnh ?? this.cnh,
       modeloVeiculo: modeloVeiculo ?? this.modeloVeiculo,
       placaVeiculo: placaVeiculo ?? this.placaVeiculo,
+      qtdAssentos: qtdAssentos ?? this.qtdAssentos,
     );
   }
 }
@@ -68,6 +72,7 @@ class UserProvider extends ChangeNotifier {
       cnh: "123456789",
       modeloVeiculo: "HB20",
       placaVeiculo: "ABC1234",
+      qtdAssentos: 24,
     ),
   ];
 
@@ -84,6 +89,7 @@ class UserProvider extends ChangeNotifier {
     String? cnh,
     String? modeloVeiculo,
     String? placaVeiculo,
+    int? qtdAssentos,
   }) {
     final novoUsuario = Usuario(
       id: _proximoId++,
@@ -94,6 +100,7 @@ class UserProvider extends ChangeNotifier {
       cnh: cnh,
       modeloVeiculo: modeloVeiculo,
       placaVeiculo: placaVeiculo,
+      qtdAssentos: qtdAssentos,
     );
 
     _usuarios.add(novoUsuario);
@@ -150,6 +157,7 @@ class UserProvider extends ChangeNotifier {
     String? cnh,
     String? modeloVeiculo,
     String? placaVeiculo,
+    int? qtdAssentos,
   }) {
     final index = _usuarios.indexWhere(
       (usuario) => usuario.id == id,
@@ -165,6 +173,7 @@ class UserProvider extends ChangeNotifier {
       cnh: cnh,
       modeloVeiculo: modeloVeiculo,
       placaVeiculo: placaVeiculo,
+      qtdAssentos: qtdAssentos,
     );
 
     notifyListeners();

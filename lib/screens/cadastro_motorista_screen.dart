@@ -13,8 +13,10 @@ class CadMotoristaScreen extends StatefulWidget {
   
 class _CadMotoristaScreenState extends State<CadMotoristaScreen> {
   final TextEditingController _nomeCtrl = TextEditingController();
+  final TextEditingController _sobreNCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _senhaCtrl = TextEditingController();
+  final TextEditingController _cnhCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,127 +46,145 @@ class _CadMotoristaScreenState extends State<CadMotoristaScreen> {
         centerTitle: true, // para centralizar o título
       ),
 
-      body: Padding(
-        padding: EdgeInsets.all(32),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 28,
-            children: [
-              Text(
-                "Bem vindo(a)!",
-                style: TextTheme.of(context).headlineMedium?.copyWith(color: Colors.black),
-              ),
-              CircleAvatar( // * foto de perfil
-                backgroundColor: Theme.of(context).primaryColor,
-                radius: 70,
-                child: Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: Center(
+            child: Column(
+              spacing: 28,
+              children: [
+                Text(
+                  "Bem vindo(a)!",
+                  style: TextTheme.of(context).headlineMedium?.copyWith(color: Colors.black),
                 ),
-              ),
-              SizedBox( // * Botão de upload para foto de perfil
-                width: 235,
-                child: OutlinedButton(
-                  onPressed: () {}, 
-                  child: Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.upload),
-                      const Text("Escolher Foto de Perfil")
-                    ],
-                  )
-                ),
-              ),
-              SizedBox( // * input do nome
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _nomeCtrl,
-                  decoration: InputDecoration(labelText: "Nome"),
-                ),
-              ),
-              SizedBox( // * input do email
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _emailCtrl,
-                  decoration: InputDecoration(labelText: "Email"),
-                ),
-              ),
-              SizedBox( // * input da senha
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _senhaCtrl,
-                  decoration: InputDecoration(labelText: "Senha"),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 60,
-                width: 200,
-                child: ElevatedButton(
-                  onPressed: () { // ! criar uma função para verificar a validade dos campos
-                    if (userProvider.emailJaExiste(_emailCtrl.text)) {
-                      _mostrarSnackBar(context, "Esse email já está em uso.", erro: true);
-                      return;
-                    }
-                    else if (_nomeCtrl.text.isNotEmpty && _emailCtrl.text.isNotEmpty && _senhaCtrl.text.isNotEmpty) { // se todos os campos estiverem corretos, cadastra o usuário
-                      final novoUsuario = userProvider.cadastrarUsuario( // salva as informações do cadastro
-                        nome: _nomeCtrl.text, 
-                        email: _emailCtrl.text, 
-                        senha: _senhaCtrl.text, 
-                        tipo: UserType.motorista
-                      );
-
-                      authProvider.login(novoUsuario); // faz login no usuário
-
-                      context.go('/cadastrar/veiculo');
-                    }
-                    else {
-                      _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
-                      return;
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Continuar"),
-                      Icon(
-                        Icons.arrow_forward,
-                        size: 25,
-                      )
-                    ],
+                CircleAvatar( // * foto de perfil
+                  backgroundColor: Theme.of(context).primaryColor,
+                  radius: 70,
+                  child: Icon(
+                    Icons.person,
+                    size: 80,
+                    color: Colors.white,
                   ),
                 ),
-              ),
-              Container(
-                width: 200,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20))
-                ),
-                child: InkWell(
-                  onTap: () => context.go('/login'),
-                  child: Row(
-                    spacing: 5,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Já possui conta?",
-                        style: TextTheme.of(context).headlineSmall,
-                      ),
-                      Icon(Icons.arrow_forward)
-                    ],
+                SizedBox( // * Botão de upload para foto de perfil
+                  width: 235,
+                  child: OutlinedButton(
+                    onPressed: () {}, 
+                    child: Row(
+                      spacing: 10,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.upload),
+                        const Text("Escolher Foto de Perfil")
+                      ],
+                    )
                   ),
                 ),
-              )
-            ],
+                SizedBox( // * input do nome
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _nomeCtrl,
+                    decoration: InputDecoration(labelText: "Nome"),
+                  ),
+                ),
+                SizedBox( // * input do sobrenome
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _sobreNCtrl,
+                    decoration: InputDecoration(labelText: "Sobrenome"),
+                  ),
+                ),
+                SizedBox( // * input do email
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _emailCtrl,
+                    decoration: InputDecoration(labelText: "Email"),
+                  ),
+                ),
+                SizedBox( // * input da senha
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _senhaCtrl,
+                    decoration: InputDecoration(labelText: "Senha"),
+                  ),
+                ),
+                SizedBox( // * input do cnh
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _cnhCtrl,
+                    decoration: InputDecoration(labelText: "CNH"),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 60,
+                  width: 200,
+                  child: ElevatedButton(
+                    onPressed: () { // TODO: criar uma função para verificar a validade dos campos
+                      if (userProvider.emailJaExiste(_emailCtrl.text)) {
+                        _mostrarSnackBar(context, "Esse email já está em uso.", erro: true);
+                        return;
+                      }
+                      else if (_nomeCtrl.text.isNotEmpty && _sobreNCtrl.text.isNotEmpty && _emailCtrl.text.isNotEmpty && _senhaCtrl.text.isNotEmpty && _cnhCtrl.text.isNotEmpty) { // se todos os campos estiverem corretos, cadastra o usuário
+                        final novoUsuario = userProvider.cadastrarUsuario( // salva as informações do cadastro
+                          nome: "${_nomeCtrl.text} ${_sobreNCtrl.text}", 
+                          email: _emailCtrl.text, 
+                          senha: _senhaCtrl.text, 
+                          cnh: _cnhCtrl.text,
+                          tipo: UserType.motorista
+                        );
+                        
+                        authProvider.login(novoUsuario); // faz login no usuário
+
+                        context.go('/cadastrar/veiculo');
+                      }
+                      else {
+                        _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
+                        return;
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Continuar"),
+                        Icon(
+                          Icons.arrow_forward,
+                          size: 25,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 200,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  child: InkWell(
+                    onTap: () => context.go('/login'),
+                    child: Row(
+                      spacing: 5,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Já possui conta?",
+                          style: TextTheme.of(context).headlineSmall,
+                        ),
+                        Icon(Icons.arrow_forward)
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

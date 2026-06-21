@@ -60,7 +60,6 @@ O Sobe aí! tem o objetivo de conectar pessoas que precisam se deslocar de um lu
       ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           spacing: 50,
           children: [
             SizedBox(height: 12,),

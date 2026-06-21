@@ -44,120 +44,123 @@ class _CadPassageiroScreenState extends State<CadPassageiroScreen> {
         centerTitle: true, // para centralizar o título
       ),
 
-      body: Padding(
-        padding: EdgeInsets.all(32),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 28,
-            children: [
-              Text(
-                "Bem vindo(a)!",
-                style: TextTheme.of(context).headlineMedium?.copyWith(color: Colors.black),
-              ),
-              CircleAvatar( // * foto de perfil
-                backgroundColor: Theme.of(context).primaryColor,
-                radius: 70,
-                child: Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Colors.white,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 28,
+              children: [
+                SizedBox(height: 12,),
+                Text(
+                  "Bem vindo(a)!",
+                  style: TextTheme.of(context).headlineMedium?.copyWith(color: Colors.black),
                 ),
-              ),
-              SizedBox( // * Botão de upload para foto de perfil
-                width: 235,
-                child: OutlinedButton(
-                  onPressed: () {}, 
-                  child: Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.upload),
-                      const Text("Escolher Foto de Perfil")
-                    ],
-                  )
-                ),
-              ),
-              SizedBox( // * input do nome
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _nomeCtrl,
-                  decoration: InputDecoration(labelText: "Nome"),
-                ),
-              ),
-              SizedBox( // * input do email
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _emailCtrl,
-                  decoration: InputDecoration(labelText: "Email"),
-                ),
-              ),
-              SizedBox( // * input da senha
-                width: 250,
-                height: 50,
-                child: TextField( 
-                  controller: _senhaCtrl,
-                  decoration: InputDecoration(labelText: "Senha"),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                height: 60,
-                width: 180,
-                child: ElevatedButton(
-                  onPressed: () { // ! criar uma função para verificar a validade dos campos
-                    if (userProvider.emailJaExiste(_emailCtrl.text)) {
-                      _mostrarSnackBar(context, "Esse email já está em uso.", erro: true);
-                      return;
-                    }
-                    else if (_nomeCtrl.text.isNotEmpty && _emailCtrl.text.isNotEmpty && _senhaCtrl.text.isNotEmpty) { // se todos os campos estiverem corretos, cadastra o usuário
-                      final novoUsuario = userProvider.cadastrarUsuario( // salva as informações do cadastro
-                        nome: _nomeCtrl.text, 
-                        email: _emailCtrl.text, 
-                        senha: _senhaCtrl.text, 
-                        tipo: UserType.passageiro
-                      );
-
-                      authProvider.login(novoUsuario); // faz login no usuário
-
-                      _mostrarSnackBar(context, "Cadastro realizado com sucesso!", erro: false);
-
-                      context.go('/home');
-                    }
-                    else {
-                      _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
-                      return;
-                    }
-                  },
-                  child: Text("Cadastrar"),
-                ),
-              ),
-              Container(
-                width: 200,
-                height: 40,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20))
-                ),
-                child: InkWell(
-                  onTap: () => context.go('/login'),
-                  child: Row(
-                    spacing: 5,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Já possui conta?",
-                        style: TextTheme.of(context).headlineSmall,
-                      ),
-                      Icon(Icons.arrow_forward)
-                    ],
+                CircleAvatar( // * foto de perfil
+                  backgroundColor: Theme.of(context).primaryColor,
+                  radius: 70,
+                  child: Icon(
+                    Icons.person,
+                    size: 80,
+                    color: Colors.white,
                   ),
                 ),
-              )
-            ],
+                SizedBox( // * Botão de upload para foto de perfil
+                  width: 235,
+                  child: OutlinedButton(
+                    onPressed: () {}, 
+                    child: Row(
+                      spacing: 10,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.upload),
+                        const Text("Escolher Foto de Perfil")
+                      ],
+                    )
+                  ),
+                ),
+                SizedBox( // * input do nome
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _nomeCtrl,
+                    decoration: InputDecoration(labelText: "Nome"),
+                  ),
+                ),
+                SizedBox( // * input do email
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _emailCtrl,
+                    decoration: InputDecoration(labelText: "Email"),
+                  ),
+                ),
+                SizedBox( // * input da senha
+                  width: 250,
+                  height: 50,
+                  child: TextField( 
+                    controller: _senhaCtrl,
+                    decoration: InputDecoration(labelText: "Senha"),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 60,
+                  width: 180,
+                  child: ElevatedButton(
+                    onPressed: () { // ! criar uma função para verificar a validade dos campos
+                      if (userProvider.emailJaExiste(_emailCtrl.text)) {
+                        _mostrarSnackBar(context, "Esse email já está em uso.", erro: true);
+                        return;
+                      }
+                      else if (_nomeCtrl.text.isNotEmpty && _emailCtrl.text.isNotEmpty && _senhaCtrl.text.isNotEmpty) { // se todos os campos estiverem corretos, cadastra o usuário
+                        final novoUsuario = userProvider.cadastrarUsuario( // salva as informações do cadastro
+                          nome: _nomeCtrl.text, 
+                          email: _emailCtrl.text, 
+                          senha: _senhaCtrl.text, 
+                          tipo: UserType.passageiro
+                        );
+        
+                        authProvider.login(novoUsuario); // faz login no usuário
+        
+                        _mostrarSnackBar(context, "Cadastro realizado com sucesso!", erro: false);
+        
+                        context.go('/home');
+                      }
+                      else {
+                        _mostrarSnackBar(context, "Por favor, preencha todos os campos.", erro: true);
+                        return;
+                      }
+                    },
+                    child: Text("Cadastrar"),
+                  ),
+                ),
+                Container(
+                  width: 200,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20))
+                  ),
+                  child: InkWell(
+                    onTap: () => context.go('/login'),
+                    child: Row(
+                      spacing: 5,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Já possui conta?",
+                          style: TextTheme.of(context).headlineSmall,
+                        ),
+                        Icon(Icons.arrow_forward)
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
